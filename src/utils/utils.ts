@@ -4,7 +4,7 @@ import { WebMercatorViewport } from 'viewport-mercator-project';
 import { chinaGeojson, RPGeometry } from '@/static/run_countries';
 import worldGeoJson from '@surbowl/world-geo-json-zh/world.zh.json';
 import { chinaCities } from '@/static/city';
-import { MAIN_COLOR, MUNICIPALITY_CITIES_ARR, NEED_FIX_MAP, RUN_TITLES, ACTIVITY_TYPES, RICH_TITLE, CYCLING_COLOR, HIKING_COLOR, WALKING_COLOR, SWIMMING_COLOR, RUN_COLOR, RUN_TRAIL_COLOR } from './const';
+import { MAIN_COLOR, MUNICIPALITY_CITIES_ARR, NEED_FIX_MAP, RUN_TITLES, RIDE_TITLES,ACTIVITY_TYPES, RICH_TITLE, CYCLING_COLOR, HIKING_COLOR, WALKING_COLOR, SWIMMING_COLOR, RUN_COLOR, RUN_TRAIL_COLOR } from './const';
 import { FeatureCollection, LineString } from 'geojson';
 
 export type Coordinate = [number, number];
@@ -275,10 +275,23 @@ const getActivitySport = (act: Activity): string => {
   else if (act.type === 'hiking') {
     return ACTIVITY_TYPES.HIKING_TITLE;
   }
-  else if (act.type === 'cycling') {
+  else if (act.type === 'cycling' || act.type === 'Ride') {
+    const runHour = +act.start_date_local.slice(11, 13);
+    if (runHour >= 0 && runHour <= 10) {
+      return RIDE_TITLES.MORNING_RIDE_TITLE;
+    }
+    if (runHour > 10 && runHour <= 14) {
+      return RIDE_TITLES.MIDDAY_RIDE_TITLE;
+    }
+    if (runHour > 14 && runHour <= 18) {
+      return RIDE_TITLES.AFTERNOON_RIDE_TITLE;
+    }
+    if (runHour > 18 && runHour <= 21) {
+      return RIDE_TITLES.EVENING_RIDE_TITLE;
+    }
     return ACTIVITY_TYPES.CYCLING_TITLE;
   }
-  else if (act.type === 'walking') {
+  else if (act.type === 'walking' || act.type === 'Walk') {
     return ACTIVITY_TYPES.WALKING_TITLE;
   }
   // if act.type contains 'skiing'
