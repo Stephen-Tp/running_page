@@ -55,7 +55,7 @@ def config(*keys):
 STRAVA_GARMIN_TYPE_DICT = {
     "Hike": "hiking",
     "Run": "running",
-    "EBikeRide": "cycling",
+    "Ride": "cycling",
     "Walk": "walking",
     "Swim": "swimming",
 }

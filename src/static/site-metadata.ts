@@ -26,7 +26,7 @@ const data: ISiteMetadataResult = {
     },
     {
       name: 'Blog',
-      url: 'https://github.com/Stephen-Tp/gitblog',
+      url: 'https://github.com/Stephen-Tp/running_page',
     },
     {
       name: 'About',
