@@ -26,7 +26,22 @@ const YearStat = ({ year, onClick }: { year: string, onClick: (_year: string) =>
   let heartRateNullCount = 0;
   let totalMetersAvail = 0;
   let totalSecondsAvail = 0;
+
+  let runTimes: number = 0;
+  let rideTimes: number = 0;
+  let hikesTimes: number = 0;
+  let walkTimes: number = 0;
+
   runs.forEach((run) => {
+    if (run.type === 'Run' ) {
+      runTimes++;
+    } else if (run.type === 'Ride' || run.type === 'cycling' ) {
+      rideTimes++;
+    } else if (run.type === 'Walk' || run.type === 'walking' ) {
+      walkTimes ++;
+    } else if(run.type === 'Hike' ) {
+      hikesTimes++;
+    }
     sumDistance += run.distance || 0;
     sumElevationGain += run.elevation_gain || 0;
     if (run.average_speed) {
@@ -46,7 +61,7 @@ const YearStat = ({ year, onClick }: { year: string, onClick: (_year: string) =>
     }
   });
   sumDistance = parseFloat((sumDistance / 1000.0).toFixed(1));
-  sumElevationGain = (sumElevationGain).toFixed(0);
+  let sumElevationGainString = (sumElevationGain).toFixed(0);
   const avgPace = formatPace(totalMetersAvail / totalSecondsAvail);
   const hasHeartRate = !(heartRate === 0);
   const avgHeartRate = (heartRate / (runs.length - heartRateNullCount)).toFixed(
@@ -60,9 +75,12 @@ const YearStat = ({ year, onClick }: { year: string, onClick: (_year: string) =>
     >
       <section>
         <Stat value={year} description=" Journey" />
-        <Stat value={runs.length} description=" Runs" />
+        <Stat value={runTimes} description=" Runs" />
+        {rideTimes > 0 && <Stat value={rideTimes} description=" Rides" />}
+        {hikesTimes > 0 && <Stat value={hikesTimes} description=" Hikes" />}
+        {walkTimes > 0 && <Stat value={walkTimes} description=" Walks" />}
         <Stat value={sumDistance} description=" KM" />
-        {SHOW_ELEVATION_GAIN && <Stat value={sumElevationGain} description=" Elevation Gain" />}
+        {SHOW_ELEVATION_GAIN && <Stat value={sumElevationGainString} description=" Elevation Gain" />}
         <Stat value={avgPace} description=" Avg Pace" />
         <Stat value={`${streak} day`} description=" Streak" />
         {hasHeartRate && (
